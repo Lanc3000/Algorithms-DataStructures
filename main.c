@@ -27,10 +27,10 @@ int main(){
 			case 2:
 				solution02();
 				break;
-			case 1:
+			case 3:
 				solution03();
 				break;
-			case 2:
+			case 4:
 				solution04();
 				break;
 			default:
