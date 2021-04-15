@@ -1,43 +1,47 @@
 /*
  * task_02.c
  *
- *  Реализовать шейкерную сортировку.
+ *  Решить задачу о нахождении длины максимальной последовательности с помощью матрицы.
  */
 #include <stdio.h>
-void swap(int*a, int*b);
-void print(int N, int *a);
-int shakerSort(int N, int *a);
-void solution02(){
-	int arr[] = { 99, 88, 77, 66, 55, 44, 33, 22, 11, 8, 5, 3, 1 };
-	printf("Array before sorting:\n");
-		print(13, arr);
+#include <string.h>
 
-		printf("Array after sorting:\n");
+int i, j, m, n, c[20][20];
+char x[20], y[20], b[20][20];
 
-		printf("Count operations - %d\n", shakerSort(13, arr));
-		print(13, arr);
-}
-int shakerSort(int N, int *a){
-	int left = 0;
-	int right = N - 1;
-	int count = 0;
-
-	while(left < right){
-		for(int i = left; i < right; i++){
-			count++;
-			if(a[i] > a[i + 1]){
-				swap(&a[i], &a[i + 1]);
-			}
-		}
-		right--;
-		for(int i = right; i > left; i--){
-			count++;
-			if(a[i - 1] > a[i]){
-				swap(&a[i - 1], &a[i]);
-			}
-		}
-		left++;
+void printM(int i, int j){
+	if(i == 0 || j == 0)
+		return;
+	if(b[i][j] == 'c'){
+		printM(i - 1, j -1);
+		printf("%c", x[i - 1]);
 	}
-	return count;
+	else if(b[i][j] == 'u')
+		print(i - 1, j);
+	else
+		print(i, j -1);
+}
+void lcs(){
+	m = strlen(x);
+	n = strlen(y);
+	for(i = 0; i <= m; i++)
+		c[i][0] = 0;
+	for(i = 0; i <= n; i++)
+		c[0][i] = 0;
+
+	for(i = 0; i <= m; i++){
+		for(j = 1; j<= n; j++){
+			if(x[i -1] == y[j - 1]){
+				c[i][j] = c[i - 1][j - 1] + 1;
+				b[i][j] = 'c';
+			}
+			else if(c[i - 1][j] >= c[i][j - 1]){
+
+			}
+		}
+	}
+}
+void solution02(){
+
 }
 

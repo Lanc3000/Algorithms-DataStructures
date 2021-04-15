@@ -2,13 +2,13 @@
  * main.c
  *
  *  Самигуллин Тимур
- *  Алгоритмы и структуры данных. Урок 3.
+ *  Алгоритмы и структуры данных. Урок 4.
  */
 #include <stdio.h>
 void solution01();
 void solution02();
 void solution03();
-void solution04();
+
 void menu();
 
 int main(){
@@ -30,9 +30,6 @@ int main(){
 			case 3:
 				solution03();
 				break;
-			case 4:
-				solution04();
-				break;
 			default:
 				printf("Wrong selected \n");
 		}
@@ -44,6 +41,5 @@ void menu(){
 	printf("1 - task\n");
 	printf("2 - task\n");
 	printf("3 - task\n");
-	printf("4 - task\n");
 }
 
