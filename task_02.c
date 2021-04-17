@@ -8,7 +8,7 @@
 #define N 20
 #define M 20
 
-void print(int n, int m, int a[N][M]);
+void printN(int n, int m, int a[N][M]);
 
 int i, j, m, n, c[20][20];
 char x[20], y[20], b[20][20];
@@ -27,6 +27,17 @@ void printM(int i, int j)
 	else
 		printM(i, j - 1);
 }
+
+void printN(int n, int m, int arr[N][M]){
+	for(int i = 0; i < n; i++){
+		for(int j = 0; j < m; j++){
+			printf("%d ", arr[i][j]);
+		}
+		printf("\n");
+	}
+	printf("\n");
+}
+
 void lcs()
 {
 	m = strlen(x);
@@ -55,7 +66,7 @@ void lcs()
 				b[i][j] = 'l';
 			}
 		}
-	print(20, 20, c);
+	printN(20, 20, c);
 }
 void solution02(){
 	printf("enter 1st sequence");
