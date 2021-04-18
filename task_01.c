@@ -1,49 +1,77 @@
 /*
  * task_01.c
- * 1*Количество маршрутов с препятствиями. Реализовать чтение массива с препятствием и нахождение количество маршрутов.
+ * 1. Реализовать перевод из десятичной в двоичную систему счисления с использованием стека.
  */
 #include <stdio.h>
-#define N 3
-#define M 3
+#include <malloc.h>
 
-void print(int n, int m, int a[N][M]);
-void routeBuilding(int n, int m, int map[N][M]);
+#define T int
 
+struct TNode
+{
+	T value;
+	struct TNode* next;
+};
+typedef struct TNode Node;
+
+struct Stack{
+	Node *head;
+	int size;
+	int maxSize;
+};
+struct Stack Stack;
+
+void Push(T value){
+	if(Stack.size >= Stack.maxSize){
+		printf("Stack overflow");
+		return;
+	}
+	Node *tmp = (Node*)malloc(sizeof(Node));
+	tmp->value = value;
+	tmp->next = Stack.head; // записываем ссылку на предыдущий первый элемент как на следующий для нового первого элемента
+	Stack.head = tmp; //новый элемент записывается как голова стека
+	Stack.size++;
+}
+
+T Pop(){
+	if(Stack.size == 0){
+		printf("Stack is empty");
+		return;
+	}
+	Node* next = NULL;
+
+	T value;
+	value = Stack.head->value;
+
+	next = Stack.head;
+
+	Stack.head = Stack.head->next;
+
+	free(next);
+	Stack.size--;
+	return value;
+}
+void PrintStack(struct Stack stack){
+	Node* current = Stack.head;
+	while(current != NULL){
+		printf("%d", current->value);
+		current = current->next;
+	}
+
+}
 void solution01(){
 
-	int Map[N][M] = { {1, 1, 1}, {0, 1, 1}, {0, 0, 1} };
-	printf("the map:\n");
-	print(N,M, Map);
+	Stack.head = NULL;
+	Stack.maxSize = 1000;
+	int num;
 
-	printf("the count of pathes:\n");
-	routeBuilding(N, M, Map);
-}
-void print(int n, int m, int a[N][M]){
-	for(int i = 0; i < n; i++){
-		for(int j = 0; j < m; j++){
-			printf("%d ", a[i][j]);
-		}
-		printf("\n");
-	}
-	printf("\n");
-}
-void routeBuilding(int n, int m, int map[N][M]){
-	int path[N][M];
-	for(int i = 0; i < M; i++){
-		path[0][i] = 1; //тут не стал добавлять условие как в цикле ниже, хотя надо бы - в карте в первой строке могут быть препятсвия
-	}
-	for(int j = 1; j < N; j++){
-		if(map[j][0] != 0) //первое что в пришло в голову для заполнения первого столбца единицами по умолчанию
-			path[j][0] = 1;
-		else
-			path[j][0] = 0; // и нулями если в карте маршрута на этом месте есть препятствие
+	printf("Enter the number:\n");
+	scanf("%d", &num);
 
-		for(int i = 1; i < M; i++){
-			if(map[j][i] != 0)
-				path[j][i] = path[j][i - 1] + path[j - 1][i];
-			else
-				path[j][i] = 0;
-		}
+	while(num != 0){
+		Push(num % 2);
+		num = num / 2;
 	}
-	print(N, M, path);
+	PrintStack(Stack);
 }
+

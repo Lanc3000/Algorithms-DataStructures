@@ -1,12 +1,78 @@
 /*
  * task_03.c
  *
- *  Требуется обойти конем шахматную доску размером NxM, пройдя через все поля доски по одному разу. Здесь алгоритм решения такой же, как в задаче о 8 ферзях. Разница только в проверке положения коня.
+ * 3. Написать программу, которая определяет, является ли введенная скобочная последовательность правильной.
+ * 	  Примеры правильных скобочных выражений: (), ([])(), {}(), ([{}]), неправильных — )(, ())({), (, ])}), ([(]) для скобок [,(,{.
  */
+#include <stdio.h>
+#include <string.h>
+#include <malloc.h>
+#include <stdlib.h>
 
+struct Stack{
+	int top;
+	unsigned capacity;
+	int *array;
+};
+struct Stack *createStack(unsigned capacity){
+	struct Stack *stack = (struct Stack*)malloc(sizeof(struct Stack));
+	if(!stack)
+		return NULL;
+	stack->top = -1;
+	stack->capacity = capacity;
+	stack->array = (int*)malloc(stack->capacity * sizeof(int));
+	if(!stack-> array)
+		return NULL;
 
+	return stack;
+}
+
+int isEmpty(struct Stack *stack){
+	return stack->top == -1;
+}
+
+char peek(struct Stack *stack){
+	return stack->array[stack->top];
+}
+char pop1(struct Stack *stack){
+	if(!isEmpty(stack))
+		return stack->array[stack->top--];
+	return '$';
+}
+void push1(struct Stack *stack, char op){
+	stack->array[++stack->top] = op;
+}
+int evaluatePostfix(char *exp){
+	struct Stack *stack = createStack(strlen(exp));
+	int i;
+	if(!stack)
+		return -1;
+
+	for(i = 0; exp[i]; ++i){
+		if(isdigit(exp[i]))
+			push1(stack, exp[i] - '0');
+		else
+		{
+			int val1 = pop1(stack);
+			int val2 = pop1(stack);
+			switch(exp[i]){
+				case '+': push1(stack, val2 + val1);
+					break;
+				case '-': push1(stack, val2 - val1);
+					break;
+				case '*': push1(stack, val2 * val1);
+					break;
+				case '/': push1(stack, val2 / val1);
+					break;
+			}
+		}
+	}
+	return pop1(stack);
+}
 void solution03(){
-
+	char exp[] = "231*+9-";
+	printf("postfix evaluation: %d", evaluatePostfix(exp));
+	getch();
 
 }
 

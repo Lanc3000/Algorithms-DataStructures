@@ -2,9 +2,11 @@
  * main.c
  *
  *  Самигуллин Тимур
- *  Алгоритмы и структуры данных. Урок 4.
+ *  Алгоритмы и структуры данных. Урок 5.
  */
 #include <stdio.h>
+
+
 void solution01();
 void solution02();
 void solution03();
@@ -38,6 +40,7 @@ int main(){
 	return 0;
 }
 void menu(){
+	printf("\n");
 	printf("1 - task\n");
 	printf("2 - task\n");
 	printf("3 - task\n");
