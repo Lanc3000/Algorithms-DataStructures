@@ -1,77 +1,77 @@
 /*
  * task_01.c
- * 1. Реализовать перевод из десятичной в двоичную систему счисления с использованием стека.
+ * 1. Написать функции, которые считывают матрицу смежности из файла и выводят ее на экран.
  */
 #include <stdio.h>
 #include <malloc.h>
+#include <stdlib.h>
+#include <string.h>
 
-#define T int
+#define maxHeight 25
+#define maxWidth 25
+int matrix[maxHeight][maxWidth];
 
-struct TNode
-{
-	T value;
-	struct TNode* next;
-};
-typedef struct TNode Node;
-
-struct Stack{
-	Node *head;
-	int size;
-	int maxSize;
-};
-struct Stack Stack;
-
-void Push(T value){
-	if(Stack.size >= Stack.maxSize){
-		printf("Stack overflow");
-		return;
-	}
-	Node *tmp = (Node*)malloc(sizeof(Node));
-	tmp->value = value;
-	tmp->next = Stack.head; // записываем ссылку на предыдущий первый элемент как на следующий для нового первого элемента
-	Stack.head = tmp; //новый элемент записывается как голова стека
-	Stack.size++;
-}
-
-T Pop(){
-	if(Stack.size == 0){
-		printf("Stack is empty");
-		return;
-	}
-	Node* next = NULL;
-
-	T value;
-	value = Stack.head->value;
-
-	next = Stack.head;
-
-	Stack.head = Stack.head->next;
-
-	free(next);
-	Stack.size--;
-	return value;
-}
-void PrintStack(struct Stack stack){
-	Node* current = Stack.head;
-	while(current != NULL){
-		printf("%d", current->value);
-		current = current->next;
-	}
-
-}
 void solution01(){
 
-	Stack.head = NULL;
-	Stack.maxSize = 1000;
-	int num;
+    int h;
+    int w;
+    FILE *file;
 
-	printf("Enter the number:\n");
-	scanf("%d", &num);
+    file = fopen("../database/matrix.csv", "r");
+    if (file == NULL)
+        return 1;
 
-	while(num != 0){
-		Push(num % 2);
-		num = num / 2;
-	}
-	PrintStack(Stack);
+    readMatrixSize(file, &w, &h);
+    if (h != w) {
+        printf("Матрица должна быть квадратной.");
+        return 1;
+    }
+    printf("Глубина = %d Ширина = %d\n\n", h, w);
+    rewind(file);
+    readMatrix(file);
+    fclose(file);
+
+    printMatrix(w);
 }
 
+void readMatrixSize(FILE *f, int *width, int *height) {
+    int lines = 0;
+    int commas = 0;
+    int max = 0;
+    while (!feof(f)) {
+        char c;
+        fscanf(f, "%c", &c);
+        if (c == ',')
+            commas++;
+
+        if (c == '\n') {
+            lines++;
+            if (commas > max)
+                max = commas;
+            commas = 0;
+        }
+    }
+    *height = lines + 1;
+    *width = max + 1;
+}
+void readMatrix(FILE *f) {
+    int i = 0, j = 0;
+    while (!feof(f)) {
+        char c;
+        fscanf(f, "%d%c", &matrix[i][j], &c);
+        j++;
+        if (c == '\n' || c == '\r') {
+            j = 0;
+            i++;
+        }
+    }
+}
+void printMatrix(int size) {
+    int i, j;
+    for (i = -1; i < size; i++) {
+        for (j = -1; j < size; j++)
+            (j < 0) ? printf("%c ", (i < 0) ? ' ' : 65 + i)
+                    : (i < 0) ? printf("%c ", 65 + j) : printf("%d ", matrix[i][j]);
+        printf("\n");
+    }
+}
