@@ -17,7 +17,7 @@ void solution01(){
     int w;
     FILE *file;
 
-    file = fopen("../database/matrix.csv", "r");
+    file = fopen("../matrix.csv", "r");
     if (file == NULL)
         return 1;
 
